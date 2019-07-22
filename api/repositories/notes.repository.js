@@ -3,31 +3,31 @@ const client = new Client();
 
 client.connect();
 
-const getAll = async () =>  {
-    const sql = 'select note_id as id, title, content from public.note';
-    let data = await client.query(sql);
+const getAll = async (userId) =>  {
+    const sql = 'select note_id as id, title, content, creation, user_id as userId from public.note where user_id = $1 order by creation';
+    let data = await client.query(sql, [userId]);
     return data.rows;
 };
 
-const find = async (id) => {
-    const sql = 'select note_id as id, title, content from public.note where note_id = $1';
-    let data = await client.query(sql, [id]);
+const find = async (userId, noteId) => {
+    const sql = 'select note_id as id, title, content, creation, user_id as userId from public.note where user_id = $1 and note_id = $2';
+    let data = await client.query(sql, [userId, noteId]);
     return data.rows.length > 0 ? data.rows[0] : null;
 };
 
-const save = async (note) => {
-    const sql = 'insert into public.note(title, content) values($1, $2)';
-    return await client.query(sql, [note.title, note.content]);
+const save = async (userId, note) => {
+    const sql = 'insert into public.note(title, content, user_id, creation) values($1, $2, $3, now())';
+    return await client.query(sql, [note.title, note.content, userId]);
 };
 
-const update = async (id, note) => {
-    const sql = 'update public.note set title = $1, content = $2 where note_id = $3';
-    return await client.query(sql, [note.title, note.content, id]);
+const update = async (userId, noteId, note) => {
+    const sql = 'update public.note set title = $1, content = $2 where user_id = $3 and note_id = $4';
+    return await client.query(sql, [note.title, note.content, userId, noteId]);
 };
 
-const deletee = async (id) => {
-    const sql = 'delete from public.note where note_id = $1';
-    return await client.query(sql, [id]);
+const deletee = async (userId, noteId) => {
+    const sql = 'delete from public.note where user_id = $1 and note_id = $2';
+    return await client.query(sql, [userId, noteId]);
 }
 
 module.exports = {

@@ -8,13 +8,19 @@ schemes:
   - http
   - https
 paths:
-  "/notes":
+  "/users/{userId}/notes":
     x-swagger-router-controller: notes.controller
     get:
       tags:
       - Notes
       description: Get the notes
       operationId: getNotes
+      parameters:
+      - name: userId
+        in: path
+        description: User identifier
+        required: true
+        type: string
       responses:
         "200":
           description: Success
@@ -28,21 +34,26 @@ paths:
       description: Create a note
       operationId: saveNote
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       parameters:
-        - in: body
-          name: body
-          description: The note to create
-          required: true
-          schema:
-            $ref: '#/definitions/Note'
+      - name: userId
+        in: path
+        description: User identifier
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: The note to create
+        required: true
+        schema:
+          $ref: '#/definitions/Note'
       responses:
         "201":
           description: Success
 
-  "/notes/{noteId}":
+  "/users/{userId}/notes/{noteId}":
     x-swagger-router-controller: notes.controller
     get:
       tags:
@@ -50,6 +61,11 @@ paths:
       description: Get a note by identifier
       operationId: findNote
       parameters:
+      - name: userId
+        in: path
+        description: User identifier
+        required: true
+        type: string
       - name: noteId
         in: path
         description: Note identifier to find
@@ -67,6 +83,11 @@ paths:
       description: Modify note data
       operationId: updateNote
       parameters:
+      - name: userId
+        in: path
+        description: User identifier
+        required: true
+        type: string
       - name: noteId
         in: path
         description: Note identifier to update
@@ -87,6 +108,11 @@ paths:
       description: Delete a note
       operationId: deleteNote
       parameters:
+      - name: userId
+        in: path
+        description: User identifier
+        required: true
+        type: string
       - name: noteId
         in: path
         description: Note identifier to delete
@@ -99,7 +125,6 @@ paths:
   /swagger:
     x-swagger-pipe: swagger_raw
     
-# complex objects have schema definitions
 definitions:
   Note:
     type: object
@@ -115,6 +140,13 @@ definitions:
       content:
         type: string
         description: Note content
+      creation:
+        type: string
+        format: date-time
+        readOnly: true
+      userId:
+        type: string
+        readOnly: true
     required: 
     - title
     - content

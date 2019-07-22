@@ -1,168 +1,218 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "0.0.1",
-      "title": "ToDo API"
-    },
-    "host": "localhost:3000",
-    "basePath": "/",
-    "schemes": [
-      "http",
-      "https"
-    ],
-    "paths": {
-      "/notes": {
-        "get": {
-          "tags": [
-            "Notes"
-          ],
-          "description": "Get the notes",
-          "operationId": "getNotes",
-          "responses": {
-            "200": {
-              "description": "Success",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/Note"
-                }
-              }
-            }
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "ToDo API"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/users/{userId}/notes": {
+      "x-swagger-router-controller": "notes.controller",
+      "get": {
+        "tags": [
+          "Notes"
+        ],
+        "description": "Get the notes",
+        "operationId": "getNotes",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User identifier",
+            "required": true,
+            "type": "string"
           }
-        },
-        "post": {
-          "tags": [
-            "Notes"
-          ],
-          "description": "Create a note",
-          "operationId": "saveNote",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "in": "body",
-              "name": "body",
-              "description": "The note to create",
-              "required": true,
-              "schema": {
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
                 "$ref": "#/definitions/Note"
               }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "Success"
             }
           }
         }
       },
-      "/notes/{noteId}": {
-        "get": {
-          "tags": [
-            "Notes"
-          ],
-          "description": "Get a note by identifier",
-          "operationId": "findNote",
-          "parameters": [
-            {
-              "name": "noteId",
-              "in": "path",
-              "description": "Note identifier to find",
-              "required": true,
-              "type": "integer",
-              "format": "int64"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "schema": {
-                "$ref": "#/definitions/Note"
-              }
-            }
-          }
-        },
-        "put": {
-          "tags": [
-            "Notes"
-          ],
-          "description": "Modify note data",
-          "operationId": "updateNote",
-          "parameters": [
-            {
-              "name": "noteId",
-              "in": "path",
-              "description": "Note identifier to update",
-              "required": true,
-              "type": "integer"
-            },
-            {
-              "in": "body",
-              "name": "body",
-              "description": "The note",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Note"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success"
+      "post": {
+        "tags": [
+          "Notes"
+        ],
+        "description": "Create a note",
+        "operationId": "saveNote",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The note to create",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Note"
             }
           }
-        },
-        "delete": {
-          "tags": [
-            "Notes"
-          ],
-          "description": "Delete a note",
-          "operationId": "deleteNote",
-          "parameters": [
-            {
-              "name": "noteId",
-              "in": "path",
-              "description": "Note identifier to delete",
-              "required": true,
-              "type": "integer"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
           }
         }
-      },
-      "/swagger": {}
-    },
-    "definitions": {
-      "Note": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Note identifier",
-            "readOnly": true
-          },
-          "title": {
-            "type": "string",
-            "description": "Note title"
-          },
-          "content": {
-            "type": "string",
-            "description": "Note content"
-          }
-        },
-        "required": [
-          "title",
-          "content"
-        ]
       }
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "x-swagger-router-controller": "notes.controller",
+      "get": {
+        "tags": [
+          "Notes"
+        ],
+        "description": "Get a note by identifier",
+        "operationId": "findNote",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "noteId",
+            "in": "path",
+            "description": "Note identifier to find",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Notes"
+        ],
+        "description": "Modify note data",
+        "operationId": "updateNote",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "noteId",
+            "in": "path",
+            "description": "Note identifier to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The note",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Notes"
+        ],
+        "description": "Delete a note",
+        "operationId": "deleteNote",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "noteId",
+            "in": "path",
+            "description": "Note identifier to delete",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/swagger": {
+      "x-swagger-pipe": "swagger_raw"
+    }
+  },
+  "definitions": {
+    "Note": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Note identifier",
+          "readOnly": true
+        },
+        "title": {
+          "type": "string",
+          "description": "Note title"
+        },
+        "content": {
+          "type": "string",
+          "description": "Note content"
+        },
+        "creation": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "userId": {
+          "type": "string",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "title",
+        "content"
+      ]
     }
   }
+}
