@@ -1,13 +1,13 @@
-FROM node:8.11.1
+FROM node:10
 
 WORKDIR /opt/todo-api
 
-COPY package.json package-lock.json* ./
+COPY package*.json ./
 
-RUN npm cache clean --force && npm install
+RUN npm install --only=production
 
-COPY . /opt/todo-api
+COPY . .
 
-EXPOSE 3000
+EXPOSE 8080
 
-CMD [ "npm", "run", "start" ]
+CMD ["npm", "start"]

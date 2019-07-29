@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "title": "ToDo API"
   },
-  "host": "localhost:3000",
+  "host": "todo-api-73aatvkgua-uc.a.run.app",
   "basePath": "/",
   "schemes": [
     "http",
